@@ -1,11 +1,9 @@
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 
 load_dotenv()
-
-
-llm = ChatOpenAI(temperature=0.9)
 
 def main():
     # read txt from elon_musk.txt
@@ -24,10 +22,11 @@ def main():
         template=summary_template,
     )
 
-    llm = ChatOpenAI(temperature=0)
-    print(llm.invoke(
-        prompt.format(bio=elon_musk_bio)
-    ).content)
+    #llm = ChatOpenAI(temperature=0)
+    llm = ChatOllama(model="gemma3:270m", temperature=0)
+    chain = prompt | llm
+    response = chain.invoke(input={"bio": elon_musk_bio})
+    print(response.content)
 
 if __name__ == "__main__":
     main()
