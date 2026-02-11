@@ -30,3 +30,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    os.environ["LANGSMITH_TRACING"] = "false"
