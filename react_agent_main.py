@@ -1,10 +1,8 @@
 from typing import Any
 
-from pydantic import BaseModel, Field
 from langchain_core.output_parsers import PydanticOutputParser
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
-from langchain_ollama import ChatOllama
 from langchain_openai import ChatOpenAI
 from langsmith import Client
 import time
