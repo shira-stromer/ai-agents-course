@@ -57,8 +57,8 @@ if __name__ == "__main__":
 
     query = "What is Pinecone in Machine Learning?"
 
-    # print("retrieving with LLM and vector store without LCEL...")
-    # print(retrieval_chain_with_lcel(query))
+    print("retrieving with LLM and vector store without LCEL...")
+    print(retrieval_chain_with_lcel(query))
 
     print("retrieving with LLM and vector store with LCEL...")
     retrieval_chain = create_retrieval_chain_with_lcel()
