@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
-from typing import TypedDict, Annotated
+from typing import TypedDict, Annotated, Literal
 from langchain_core.messages import BaseMessage, HumanMessage
 from langgraph.graph import END, StateGraph, add_messages
 
@@ -47,7 +47,7 @@ def reflection_node(state: MessageGraph) -> str:
     res = reflect_chain.invoke({"messages": state["messages"]})
     return {"messages": [HumanMessage(content=res.content)]}
 
-def should_continue_generate(state: MessageGraph) -> str:
+def should_continue_generate(state: MessageGraph) -> Literal["reflect", END]:
     if len(state["messages"]) > 6:
         return END    
     return REFLECT
@@ -58,11 +58,11 @@ builder.add_node(GENERATE, generation_node)
 builder.add_node(REFLECT, reflection_node)
 builder.set_entry_point(GENERATE)
 
-builder.add_conditional_edges(GENERATE, should_continue_generate, path_map={REFLECT: REFLECT, END: END})
+builder.add_conditional_edges(GENERATE, should_continue_generate)
 builder.add_edge(REFLECT, GENERATE)
 
 app = builder.compile()
-print(app.get_graph().draw_mermaid())
+app.get_graph().draw_mermaid_png(output_file_path="agent_flow.png")
 
 if __name__ == "__main__":
     pass
